@@ -1,10 +1,12 @@
 from Funciones import *
 from CargarArreglo import *
 import os.path
+
+
 def menu(registros):
+
     print("-" * 40)
     print("Seleccione una opción")
-
     print("1) Crear arreglo de registros con tickets guardados en un archivo ")
     print("2) Crear arreglo de registros con datos ingresados por teclado ")
     print("3) Mostrar todos los tickets ordenados ")
@@ -17,13 +19,18 @@ def menu(registros):
           " vehiculos y cuales de ellos superaron ese promedio")
     print("0) Salir ")
     print("-" * 40)
+
     opc = int(input('Opcion: '))
 
     # Bandera para verificar que el importe de cada
     # tipo de vehiculo fue calculado (necesario para el punto 8)
+
     importe_calculado = False
+
     FD = "peajes.dat"
+
     while opc != 0:
+
         if opc == 1:
             decision = int(
                 input("Estas seguro de que deseas eliminar el registro anterior y crear uno nuevo si(1) no (0): "))
@@ -38,13 +45,11 @@ def menu(registros):
         elif opc == 3:
             mostrarRegistros(FD)
 
-
         elif opc == 4:
             patente_buscada = input("\nIngrese la patente que desea buscar: ")
             cabina_buscada = input("Ingrese el país de la cabina: ")
-
             resultado4 = buscarRegistro(registros, patente_buscada, cabina_buscada)
-            if not (resultado4):
+            if resultado4 == None:
                 print("\nNo se encontró el registro deseado")
             else:
                 print("\n", resultado4)

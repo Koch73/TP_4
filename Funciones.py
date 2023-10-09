@@ -95,17 +95,20 @@ def definirPatente(patente):
 
 
 #Validar que el codigo del ticket contenga solo numeros
-def validateCodigo(codigo, n):
+def validateCodigo(codigo):
+    valid = False
     c = 0
-    if len(codigo) != n:
-        return False
-    for i in range(len(codigo)):
-        if codigo[i] in "0123456789":
-            c += 1
-    if c == len(codigo):
-        return True
-    else:
-        return False
+    while not(valid):
+        for i in range(len(codigo)):
+            if codigo[i] in "123456789":
+                c += 1
+                continue
+            else:
+                codigo = input("Codigo incorrecto, ingrese un codigo valido: ")
+                break
+        if len(codigo) == c:
+            valid = True
+
 
 
 #Validar que la patente sea correcta
@@ -152,9 +155,7 @@ def validateKm(distancia):
 def cargaPorTeclado(Registros):
 
     codigo = input("Ingrese el código: ")
-    while not(validateCodigo(codigo, 10)):
-        print("Error, codigo incorrecto, ingreselo de nuevo.")
-        codigo = input("Ingrese el código: ")
+    validateCodigo(codigo)
 
     patente = (input("Ingrese la patente: ")).upper()
     while not(validatePatente(patente)):
@@ -238,7 +239,7 @@ def buscarRegistro(Registros, p, x):
         if Registros[i].patente == p and Registros[i].pais == x:
             return Registros[i]
 
-    return False
+    return None
 
 """ estas funcion no sirve en esste contexto """
 #Buscar mediante busqueda binaria el codigo c en los registros
@@ -248,7 +249,7 @@ def buscarCodigo(Registros, c):
         if Registros[i].codigo == c:
             return i
 
-    return False
+    return None
 
 
 #Cambia el valor de la forma de pago de 1 a 2 y viceversa

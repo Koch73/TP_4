@@ -45,18 +45,6 @@ def definirPatente(patente):
     ):
         pais_patente = "Brasil"
         indice_pais = 2
-    #CHILE
-
-    elif (
-        patente[0].isalpha()
-        and patente[1].isalpha()
-        and patente[2].isalpha()
-        and patente[3].isalpha()
-        and patente[4].isdigit()
-        and patente[5].isdigit()
-    ):
-        pais_patente = "Chile"
-        indice_pais = 5
 
     #PARAGUAY
     elif (
@@ -86,29 +74,26 @@ def definirPatente(patente):
 
     else:
         pais_patente = "Otro"
-        indice_pais = 6
+        indice_pais = 5
 
-    return pais_patente, indice_pais
-
+    return indice_pais
+""" cambie el return """
 
 
 
 
 #Validar que el codigo del ticket contenga solo numeros
-def validateCodigo(codigo):
-    valid = False
+def validateCodigo(codigo, n):
     c = 0
-    while not(valid):
-        for i in range(len(codigo)):
-            if codigo[i] in "123456789":
-                c += 1
-                continue
-            else:
-                codigo = input("Codigo incorrecto, ingrese un codigo valido: ")
-                break
-        if len(codigo) == c:
-            valid = True
-
+    if len(codigo) != n:
+        return False
+    for i in range(len(codigo)):
+        if codigo[i] in "0123456789":
+            c += 1
+    if c == len(codigo):
+        return True
+    else:
+        return False
 
 
 #Validar que la patente sea correcta
@@ -155,7 +140,9 @@ def validateKm(distancia):
 def cargaPorTeclado(Registros):
 
     codigo = input("Ingrese el código: ")
-    validateCodigo(codigo)
+    while not(validateCodigo(codigo, 10)):
+        print("Error, codigo incorrecto, ingreselo de nuevo.")
+        codigo = input("Ingrese el código: ")
 
     patente = (input("Ingrese la patente: ")).upper()
     while not(validatePatente(patente)):
@@ -228,29 +215,66 @@ def mostrarRegistros(FD):
 
         while registros.tell() < size:
             print(pickle.load(registros))
+        registros.close()
 
 
-""" estas funcion no sirve en esste contexto """
-#Buscar registro con la patente p en el pais x
-def buscarRegistro(Registros, p, x):
+#Buscar registro con la patente p y retornar un contador
+def BuscaryMostrarPatente(PD, p):
+    registros = open(PD, "rb")
     p = p.upper()
+    c = 0
     #Linear search
-    for i in range(len(Registros)):
-        if Registros[i].patente == p and Registros[i].pais == x:
-            return Registros[i]
+    size = os.path.getsize(PD)
+    while registros.tell() < size:
+        ticket = pickle.load(registros)
+        if ticket.patente == p:
+            c += 1
+            print(ticket)
+    registros.close()
+    if c > 0:
+        return c
+    else:
+        return None
 
+
+#Buscar mediante busqueda el codigo c en los registros
+def buscarCodigo(FD, c):
+    registros = open(FD, "rb")
+
+    #Linear search
+    size = os.path.getsize(FD)
+
+    while registros.tell() < size:
+        ticket = pickle.load(registros)
+
+        if ticket.codigo == c:
+
+            registros.close()
+            return ticket
+
+    registros.close()
     return None
 
-""" estas funcion no sirve en esste contexto """
-#Buscar mediante busqueda binaria el codigo c en los registros
-def buscarCodigo(Registros, c):
-    # Linear search
-    for i in range(len(Registros)):
-        if Registros[i].codigo == c:
-            return i
+def MatrizConteo(FD):
+    # Crear la matriz 3*5
+    Mc = [[0]*5 for _ in range(3)]
 
-    return None
+    registros = open(FD, "rb")
+    size = os.path.getsize(FD)
 
+    while registros.tell() < size:
+        ticket = pickle.load(registros)
+        Mc[ticket.tipoV][ticket.pais] += 1
+
+    registros.close()
+    return Mc
+
+def mostrarMatrizConteo(Mc):
+
+    for i in range(len(Mc[0])):
+        for j in range(len(Mc)):
+            if Mc[j][i] != 0:
+                print("\nel pais ", i, " tipo de vehículo ", j, " pasó una cantidad: ", Mc[j][i])
 
 #Cambia el valor de la forma de pago de 1 a 2 y viceversa
 def cambiarValor(Registros,indice):
@@ -284,7 +308,6 @@ def cantidadVehiculos(Registros):
 
     lista_nombres_paises = ["Argentina","Bolivia","Brasil","Paraguay","Uruguay","Chile","otros"]
     lista_paises = [0,0,0,0,0,0,0]
-    contador_paises = 0
 
     for i in range(len(Registros)):
 
@@ -355,7 +378,6 @@ def importeTickets(Registros):
             calcularImporte(Registros[i].tipoV, Registros[i].pais, Registros[i].forma_de_pago)
 
         importe_total_vehiculos[indice_vehiculo] += total_vehiculo
-
     return importe_total_vehiculos, lista_vehiculos
 
 

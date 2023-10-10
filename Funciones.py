@@ -1,8 +1,8 @@
 import io
+import os
 import pickle
 import os.path
 from Clases import *
-
 
 
 #Verificar el pais de la patente
@@ -45,6 +45,19 @@ def definirPatente(patente):
     ):
         pais_patente = "Brasil"
         indice_pais = 2
+    #CHILE
+
+    elif (
+        patente[0] == " "
+        and patente[1].isalpha()
+        and patente[2].isalpha()
+        and patente[3].isalpha()
+        and patente[4].isalpha()
+        and patente[5].isdigit()
+        and patente[6].isdigit()
+    ):
+        pais_patente = "Chile"
+        indice_pais = 5
 
     #PARAGUAY
     elif (
@@ -74,100 +87,87 @@ def definirPatente(patente):
 
     else:
         pais_patente = "Otro"
-        indice_pais = 5
+        indice_pais = 6
 
-    return indice_pais
-""" cambie el return """
-
+    return pais_patente, indice_pais
 
 
+#Validar que el codigo del ticket contenga solo numeros y que no sea = 0
+def validateCodigo():
+    while True:
+        codigo = input("Ingrese el codigo: ")
 
-#Validar que el codigo del ticket contenga solo numeros
-def validateCodigo(codigo, n):
-    c = 0
-    if len(codigo) != n:
-        return False
-    for i in range(len(codigo)):
-        if codigo[i] in "0123456789":
-            c += 1
-    if c == len(codigo):
-        return True
-    else:
-        return False
+        if codigo.isdigit() and codigo != "0":
+            return int(codigo)
+        else:
+            print("Incorrecto, ingrese un codigo valido")
 
 
-#Validar que la patente sea correcta
-def validatePatente(patente):
-    c = 0
-    for i in range(len(patente)):
-        if patente[i].isalpha() or patente[i] in "0123456789":
-            c += 1
-    if len(patente) == c:
-        return True
-    else:
-        return False
+#Validar que la patente contenga solo caracteres alfanumericos
+def validatePatente():
+    while True:
+        patente = input("Ingrese la patente: ").upper()
+        is_valid = True
+
+        for char in patente:
+            if not (char.isalpha() or char.isdigit()):
+                is_valid = False
+                break
+
+        if is_valid:
+            return patente
+        else:
+            print("Error, Patente incorrecta")
 
 
-#Validar que el pais sea correcto
-def validatePais(pais):
-    if not pais in '01234' or len(pais) != 1:
-        return False
-    return True
+#Validar que el pais de la cabina este entre 0 y 4
+def validatePais():
+    while True:
+        pais = input("Ingrese el pais de la cabina: ")
+        if pais in "01234" and len(pais) == 1:
+            return int(pais)
+        else:
+            print("Error, pais no valido")
 
 
-#Validar que el tipo de vehiculo sea correcto
-def validateTipo(tipo):
-    if not tipo in '012' or len(tipo) != 1:
-        return False
-    return True
+#Validar que el tipo de vehiculo este entre 0 y 2
+def validateTipo():
+    tipo = input("Ingrese el tipo de vehiculo: ")
+    while not tipo in '012' or len(tipo) != 1:
+        print("Error, tipo de vehiculo no valido")
+        tipo = input("Ingrese el tipo de vehiculo: ")
+    return int(tipo)
 
 
-#Validar que la forma de pago sea correcta
-def validateFormadepago(pago):
-    if not pago in '12' or len(pago) != 1:
-        return False
-    return True
+#Validar que la forma de pago este entre  1 o 2
+def validateFormaDePago():
+    while True:
+        pago = input("Ingrese la forma de pago: ")
+        if pago in ('12') and len(pago) == 1:
+            return int(pago)
+        else:
+            print("Forma de pago inválida. Vuelva a intentar.")
 
+#Validar que la distancia recorrida en kilometros este entre 000 y 999
+def validateKm():
 
-#Validar que la distancia sea correcta
-def validateKm(distancia):
-    if not distancia.isdigit() or len(distancia) != 3:
-        return False
-    return True
+    distancia = input("Ingrese los kilómetros recorridos: ")
+    while not distancia.isdigit():
+        print("Error, distancia recorrida incorrecta, ingresela de nuevo")
+        distancia = input("Ingrese los kilómetros recorridos: ")
+    return int(distancia)
 
 
 #Cargar un registro por teclado
-def cargaPorTeclado(Registros):
+def cargaPorTeclado(FD):
 
-    codigo = input("Ingrese el código: ")
-    while not(validateCodigo(codigo, 10)):
-        print("Error, codigo incorrecto, ingreselo de nuevo.")
-        codigo = input("Ingrese el código: ")
+    codigo = validateCodigo()
+    patente = validatePatente()
+    pais = validatePais()
+    tipoV = validateTipo()
+    forma_de_pago = validateFormaDePago()
+    km_recorridos = validateKm()
 
-    patente = (input("Ingrese la patente: ")).upper()
-    while not(validatePatente(patente)):
-        print("Error, patente incorrecta, ingresela de nuevo")
-        patente = (input("Ingrese la patente: ")).upper()
-
-    tipoV = input("Ingrese el tipo de vehiculo: ")
-    while not(validateTipo(tipoV)):
-        print("Error, tipo de vehiculo incorrecto, ingreselo de nuevo")
-        tipoV = input("Ingrese el tipo de vehiculo: ")
-
-    forma_de_pago = input("Ingrese la forma de pago: ")
-    while not(validateFormadepago(forma_de_pago)):
-        print("Error, forma de pago incorrecta, ingresela de nuevo")
-        forma_de_pago = input("Ingrese la forma de pago: ")
-
-    pais = input("Ingrese el país: ")
-    while not(validatePais(pais)):
-        print("Error, ingrese un pais correcto (0-4): ")
-        pais = input("Ingrese el país: ")
-
-    km_recorridos = input("Ingrese lo kilómetros recorridos: ")
-    while not(validateKm(km_recorridos)):
-        print("Error, distancia recorrida incorrecta, ingresela de nuevo")
-        km_recorridos = input("Ingrese los kilómetros recorridos: ")
 
     TicketGenerado = Ticket()
     TicketGenerado.codigo = codigo
@@ -176,7 +176,12 @@ def cargaPorTeclado(Registros):
     TicketGenerado.forma_de_pago = forma_de_pago
     TicketGenerado.pais = pais
     TicketGenerado.km_Recorridos = km_recorridos
-    Registros.append(TicketGenerado)
+
+    registros = open(FD, "wb")
+
+    pickle.dump(TicketGenerado, registros)
+
+    registros.close()
 
 
 #Agregar los 0 que sean necesarios (x) a los componentes de una lista t
@@ -188,7 +193,7 @@ def agregarCeros(Registros, x):
             Registros[i] = str_ceros + str(Registros[i].codigo)
     return Registros
 
-""" estas funcion no sirve en esste contexto """
+
 #Ordenar mediante selection sort los registros de una lista v
 def ordenarRegistros(Registros):
 
@@ -204,6 +209,7 @@ def ordenarRegistros(Registros):
 
     return Registros
 
+
 # Mostrar registros de la lista ordenados
 def mostrarRegistros(FD):
     if not os.path.exists(FD):
@@ -218,13 +224,14 @@ def mostrarRegistros(FD):
         registros.close()
 
 
-#Buscar registro con la patente p y retornar un contador
-def BuscaryMostrarPatente(PD, p):
-    registros = open(PD, "rb")
+#Buscar registros con la patente p y retornar un contador de registros encontrados
+def BuscaryMostrarPatente(FD, p):
+
+    registros = open(FD, "rb")
     p = p.upper()
     c = 0
     #Linear search
-    size = os.path.getsize(PD)
+    size = os.path.getsize(FD)
     while registros.tell() < size:
         ticket = pickle.load(registros)
         if ticket.patente == p:
@@ -255,6 +262,7 @@ def buscarCodigo(FD, c):
     registros.close()
     return None
 
+
 def MatrizConteo(FD):
     # Crear la matriz 3*5
     Mc = [[0]*5 for _ in range(3)]
@@ -269,12 +277,14 @@ def MatrizConteo(FD):
     registros.close()
     return Mc
 
+
 def mostrarMatrizConteo(Mc):
 
     for i in range(len(Mc[0])):
         for j in range(len(Mc)):
             if Mc[j][i] != 0:
                 print("\nel pais ", i, " tipo de vehículo ", j, " pasó una cantidad: ", Mc[j][i])
+
 
 #Cambia el valor de la forma de pago de 1 a 2 y viceversa
 def cambiarValor(Registros,indice):

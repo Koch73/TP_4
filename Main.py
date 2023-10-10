@@ -8,7 +8,7 @@ def menu(registros):
     print("1) Crear arreglo de registros con tickets guardados en un archivo ")
     print("2) Crear arreglo de registros con datos ingresados por teclado ")
     print("3) Mostrar todos los tickets ordenados ")
-    print("4) Buscar un ticket por patente y cabina ")
+    print("4) Buscar un ticket por patente")
     print("5) Mostrar cantidad de vehículos por cabina")
     print("6) Mostrar importe acumulado por cada vehículo ")
     print("7) Mostrar tipo de vehículo con mayor monto acumulado y el porcentaje que representa del total ")
@@ -35,7 +35,7 @@ def menu(registros):
                 print("\nRegistros cargados satisfactoriamente.\n")
 
         elif opc == 2:
-            cargaPorTeclado(registros)
+            cargaPorTeclado(FD)
             print("\nRegistro cargado satisfactoriamente.\n")
 
         elif opc == 3:
@@ -43,8 +43,7 @@ def menu(registros):
 
 
         elif opc == 4:
-            """falta validar"""
-            patente_buscada = input("\nIngrese la patente que desea buscar: ")
+            patente_buscada = validatePatente()
 
             r = BuscaryMostrarPatente(FD, patente_buscada)
             if r:
@@ -53,7 +52,7 @@ def menu(registros):
                 print("Patente no encontrada...")
         elif opc == 5:
             """" falta validar """
-            codigo_buscado = int(input("Ingrese el código buscado: "))
+            codigo_buscado = validateCodigo()
             r = buscarCodigo(FD, codigo_buscado)
             if r:
                 print(r)
@@ -96,3 +95,5 @@ def Main():
 
 if __name__ == "__main__":
     Main()
+
+#CORREGIR ERROR: EN LA OPCION 4, AL BUSCAR UNA PATENTE, EL PROGRAMA SOLO DEVUELVE UNA PATENTE, NO TODAS LAS CONCIDENCIAS

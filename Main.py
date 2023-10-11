@@ -1,30 +1,33 @@
 from Funciones import *
 from CargarArreglo import *
-import os.path
-def menu(registros):
+
+def menu():
     print("-" * 40)
     print("Seleccione una opción")
 
-    print("1) Crear arreglo de registros con tickets guardados en un archivo ")
-    print("2) Crear arreglo de registros con datos ingresados por teclado ")
-    print("3) Mostrar todos los tickets ordenados ")
-    print("4) Buscar un ticket por patente")
-    print("5) Mostrar cantidad de vehículos por cabina")
-    print("6) Mostrar importe acumulado por cada vehículo ")
-    print("7) Mostrar tipo de vehículo con mayor monto acumulado y el porcentaje que representa del total ")
-    print("8) Mostrar la distancia promedio recorrida y cuantos vehículos superan el promedio ")
-    print("9) Calcular y mostrar la distancia promedio entre todos los"
-          " vehiculos y cuales de ellos superaron ese promedio")
+    print("1) guardar tickets en un archivo binario a partir de un archivo de texto")
+    print("2) Crear un nuevo ticket para agregar al archivo binario con datos ingresados por teclado ")
+    print("3) Mostrar todos los tickets del archivo binario ")
+    print("4) Buscar y mostrar tickets por patente")
+    print("5) Buscar un ticket por codigo")
+    print("6) Mostrar cantidad de vehículos segun todas las combinaciones posibles "
+          "de cabinas y tipo de vehículo ")
+    print("7) Mostrar cantidad de vehículos segun cada cabina y cada tipo de vehículo ")
+    print("8) Mostrar la distancia promedio recorrida, guardar y mostrar cuantos "
+          "vehículos superan el promedio ordenados por distancia ")
     print("0) Salir ")
     print("-" * 40)
     opc = int(input('Opcion: '))
 
     # Bandera para verificar que el importe de cada
     # tipo de vehiculo fue calculado (necesario para el punto 8)
-    importe_calculado = False
+
+
+    #Constantes
     FD = "peajes.dat"
 
-    """ cargar paises """
+    Paises = ("Argentina", "Bolivia", "Brasil", "Paraguay", "Uruguay")
+    Vehiculos = ("Motocicleta", "Automovil", "Camión")
 
     while opc != 0:
         if opc == 1:
@@ -51,7 +54,7 @@ def menu(registros):
             else:
                 print("Patente no encontrada...")
         elif opc == 5:
-            """" falta validar """
+
             codigo_buscado = validateCodigo()
             r = buscarCodigo(FD, codigo_buscado)
             if r:
@@ -63,34 +66,23 @@ def menu(registros):
             """En la f cantidadVehiculos() hay una variable gris"""
 
             Mc = MatrizConteo(FD)
-            mostrarMatrizConteo(Mc)
+            mostrarMatrizConteo(Mc, Paises, Vehiculos)
 
         elif opc == 7:
-            importe_total_vehiculos, lista_vehiculos = importeTickets(registros)
-            mostrarImportes(importe_total_vehiculos, lista_vehiculos)
-            importe_calculado = True
+            Mc = MatrizConteo(FD)
+            MostrarVehiculos(Mc, Paises, Vehiculos)
 
         elif opc == 8:
-            if not importe_calculado:
-                importe_total_vehiculos, lista_vehiculos = importeTickets(registros)
-
-            may, porc, indice_may = porcentajeVehiculos(importe_total_vehiculos, registros)
+            may, porc, indice_may = porcentajeVehiculos()
             if may != 0 and porc != 0 and indice_may != 0:
                 print("\nEl tipo de vehículo con mayor monto acumulado fue ", "'", lista_vehiculos[indice_may], "'",
                       "es igual a: ", may, "y representa el", porc, "% del total")
-
-        elif opc == 9:
-            promedio, cantidad = promedioVehiculos(registros)
-            if promedio != 0 and cantidad != 0:
-                print("\nEl promedio de distancia desde la ultima cabina fue: ", promedio, " Km",
-                      " y la cantidad de vehículos que superan el promedio es: ", cantidad)
 
         opc = int(input('\nOpcion: '))
 
 
 def Main():
-    registros = []
-    menu(registros)
+    menu()
 
 
 if __name__ == "__main__":

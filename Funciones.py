@@ -278,12 +278,26 @@ def MatrizConteo(FD):
     return Mc
 
 
-def mostrarMatrizConteo(Mc):
-
+def mostrarMatrizConteo(Mc, Paises, Vehiculos):
     for i in range(len(Mc[0])):
         for j in range(len(Mc)):
             if Mc[j][i] != 0:
-                print("\nel pais ", i, " tipo de vehículo ", j, " pasó una cantidad: ", Mc[j][i])
+                print("\nel pais: ", Paises[i], " tipo de vehículo: ", Vehiculos[j], " pasó una cantidad: ", Mc[j][i])
+def MostrarVehiculos(Mc, Paises, Vehiculos):
+
+    print("la cantidad de vehículos del pais: ")
+    for i in range(len(Mc[0])):
+        acumVehiculo = 0
+        for j in range(len(Mc)):
+            acumVehiculo += Mc[j][i]
+        print(Paises[i], ": ", acumVehiculo)
+    print()
+    print("la cantidad de vehículos del tipo: ")
+    for i in range(len(Mc)):
+        acumCabina = 0
+        for j in range(len(Mc[0])):
+            acumCabina += Mc[i][j]
+        print(Vehiculos[i], ": ", acumCabina)
 
 
 #Cambia el valor de la forma de pago de 1 a 2 y viceversa
@@ -371,28 +385,9 @@ def calcularImporte(vehiculo,pais,forma_de_pago):
     return importe_final, indice_importe
 
 
-def mostrarImportes(importe_final_vehiculos, lista_vehiculos):
-    for i in range(len(importe_final_vehiculos)):
-        print("Importe total acumulado por tickets de ",
-              lista_vehiculos[i], " : ", importe_final_vehiculos[i])
-
-
-#Suma los importes de los distintos tipos de vehiculos
-def importeTickets(Registros):
-
-    lista_vehiculos = ["Motocicletas", "Automoviles", "Camiones"]
-    importe_total_vehiculos = [0,0,0]
-
-    for i in range(len(Registros)):
-        total_vehiculo, indice_vehiculo = \
-            calcularImporte(Registros[i].tipoV, Registros[i].pais, Registros[i].forma_de_pago)
-
-        importe_total_vehiculos[indice_vehiculo] += total_vehiculo
-    return importe_total_vehiculos, lista_vehiculos
-
 
 #Calcular promedio y porcentaje del tipo vehiculo con el importe mas alto
-def porcentajeVehiculos(importe_total_vehiculos, registros):
+#def porcentajeVehiculos():
     may = 0
     total = 0
     indice = 0
@@ -409,21 +404,5 @@ def porcentajeVehiculos(importe_total_vehiculos, registros):
     return may, porc, indice
 
 
-#Calcula el promedio de la distancia recorrida desde la ultima cabina
-def promedioVehiculos(Registros):
-    total = 0
-    #Contador para los vehículos que superan la distancia promedio
-    c_vehiculos = 0
-    if not Registros:
-        print("Primero cargue el vector por favor...")
-        return 0, 0
-    for i in range(len(Registros)):
-        total += int(Registros[i].km_Recorridos)
 
-    prom = round(total / len(Registros), 2)
-
-    for i in range(len(Registros)):
-        if int(Registros[i].km_Recorridos) > prom:
-            c_vehiculos += 1
-    return prom, c_vehiculos
 

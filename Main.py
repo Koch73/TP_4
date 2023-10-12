@@ -5,7 +5,7 @@ def menu():
     print("-" * 40)
     print("Seleccione una opción")
 
-    print("1) guardar tickets en un archivo binario a partir de un archivo de texto")
+    print("1) Guardar tickets en un archivo binario a partir de un archivo de texto")
     print("2) Crear un nuevo ticket para agregar al archivo binario con datos ingresados por teclado ")
     print("3) Mostrar todos los tickets del archivo binario ")
     print("4) Buscar y mostrar tickets por patente")
@@ -46,21 +46,21 @@ def menu():
 
 
         elif opc == 4:
-            patente_buscada = validatePatente()
+            p = validatePatente()
 
-            r = BuscaryMostrarPatente(FD, patente_buscada)
+            r = BuscaryMostrarPatente(FD, p)
             if r:
                 print("se encontraron un total de: ", r, "registro/s")
             else:
                 print("Patente no encontrada...")
         elif opc == 5:
 
-            codigo_buscado = validateCodigo()
-            r = buscarCodigo(FD, codigo_buscado)
+            c = validateCodigo()
+            r = buscarCodigo(FD, c)
             if r:
                 print(r)
             else:
-                print("registro no encontrado...")
+                print("Registro no encontrado...")
 
         elif opc == 6:
             """En la f cantidadVehiculos() hay una variable gris"""
@@ -72,12 +72,12 @@ def menu():
             Mc = MatrizConteo(FD)
             MostrarVehiculos(Mc, Paises, Vehiculos)
 
-        elif opc == 8:
+        """elif opc == 8:
             may, porc, indice_may = porcentajeVehiculos()
             if may != 0 and porc != 0 and indice_may != 0:
                 print("\nEl tipo de vehículo con mayor monto acumulado fue ", "'", lista_vehiculos[indice_may], "'",
                       "es igual a: ", may, "y representa el", porc, "% del total")
-
+"""
         opc = int(input('\nOpcion: '))
 
 

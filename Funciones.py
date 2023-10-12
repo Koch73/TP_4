@@ -161,25 +161,22 @@ def validateKm():
 #Cargar un registro por teclado
 def cargaPorTeclado(FD):
 
-    codigo = validateCodigo()
-    patente = validatePatente()
-    pais = validatePais()
-    tipoV = validateTipo()
-    forma_de_pago = validateFormaDePago()
-    km_recorridos = validateKm()
-
-
     TicketGenerado = Ticket()
-    TicketGenerado.codigo = codigo
-    TicketGenerado.patente = patente
-    TicketGenerado.tipoV = tipoV
-    TicketGenerado.forma_de_pago = forma_de_pago
-    TicketGenerado.pais = pais
-    TicketGenerado.km_Recorridos = km_recorridos
+    TicketGenerado.codigo = validateCodigo()
+    TicketGenerado.patente = validatePatente()
+    TicketGenerado.tipoV = validateTipo()
+    TicketGenerado.forma_de_pago = validateFormaDePago()
+    TicketGenerado.pais = validatePais()
+    TicketGenerado.km_Recorridos = validateKm()
 
-    registros = open(FD, "wb")
+    if not os.path.exists(FD):
 
-    pickle.dump(TicketGenerado, registros)
+        registros = open(FD, "wb")
+        pickle.dump(TicketGenerado, registros)
+
+    else:
+        registros = open(FD, "ab")
+        pickle.dump(TicketGenerado, registros)
 
     registros.close()
 
@@ -282,7 +279,9 @@ def mostrarMatrizConteo(Mc, Paises, Vehiculos):
     for i in range(len(Mc[0])):
         for j in range(len(Mc)):
             if Mc[j][i] != 0:
-                print("\nel pais: ", Paises[i], " tipo de vehículo: ", Vehiculos[j], " pasó una cantidad: ", Mc[j][i])
+                print("\nEl tipo de vehiculo ", Vehiculos[j], " paso por el pais ", Paises[i], " ", Mc[j][i], " veces")
+
+
 def MostrarVehiculos(Mc, Paises, Vehiculos):
 
     print("la cantidad de vehículos del pais: ")

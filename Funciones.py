@@ -224,6 +224,9 @@ def mostrarRegistros(FD):
 #Buscar registros con la patente p y retornar un contador de registros encontrados
 def BuscaryMostrarPatente(FD, p):
 
+    if not(os.path.exists(FD)):
+        print("Los registros no existen, vuelva a la opcion 1 por favor...")
+        return False
     registros = open(FD, "rb")
     p = p.upper()
     c = 0
@@ -243,6 +246,9 @@ def BuscaryMostrarPatente(FD, p):
 
 #Buscar mediante busqueda el codigo c en los registros
 def buscarCodigo(FD, c):
+    if not(os.path.exists(FD)):
+        print("Los registros no existen, vuelva a la opcion 1 por favor...")
+        return False
     registros = open(FD, "rb")
 
     #Linear search
@@ -264,7 +270,12 @@ def MatrizConteo(FD):
     # Crear la matriz 3*5
     Mc = [[0]*5 for _ in range(3)]
 
+    if not(os.path.exists(FD)):
+        print("Los registros no existen, vuelva a la opcion 1 por favor...")
+        return None
+
     registros = open(FD, "rb")
+
     size = os.path.getsize(FD)
 
     while registros.tell() < size:
@@ -284,14 +295,14 @@ def mostrarMatrizConteo(Mc, Paises, Vehiculos):
 
 def MostrarVehiculos(Mc, Paises, Vehiculos):
 
-    print("la cantidad de vehículos del pais: ")
+    print("Cantidad de vehículos que pasaron por cada pais: ")
     for i in range(len(Mc[0])):
         acumVehiculo = 0
         for j in range(len(Mc)):
             acumVehiculo += Mc[j][i]
         print(Paises[i], ": ", acumVehiculo)
     print()
-    print("la cantidad de vehículos del tipo: ")
+    print("Cantidad de vehículos de cada tipo: ")
     for i in range(len(Mc)):
         acumCabina = 0
         for j in range(len(Mc[0])):
@@ -385,23 +396,32 @@ def calcularImporte(vehiculo,pais,forma_de_pago):
 
 
 
-#Calcular promedio y porcentaje del tipo vehiculo con el importe mas alto
-#def porcentajeVehiculos():
-    may = 0
-    total = 0
-    indice = 0
-    for i in range(len(importe_total_vehiculos)):
-        total += importe_total_vehiculos[i]
-        if importe_total_vehiculos[i] > may:
-            may = importe_total_vehiculos[i]
-            indice = i
-    if total != 0:
-        porc = round(may * 100 / total, 2)
-    else:
-        print("cargue el vector primero...")
-        return 0, 0, 0
-    return may, porc, indice
 
+def distanciaPromedio(FD):
+    d_total = 0
+    c = 0
+
+    if not(os.path.exists(FD)):
+        print("Los registros no existen, vuelva a la opcion 1 por favor...")
+        return False
+
+    registros = open(FD, "rb")
+
+    size = os.path.getsize(FD)
+
+    while registros.tell() < size:
+        ticket = pickle.load(registros)
+        d_total += ticket.km_Recorridos
+        c += 1
+
+    if c != 0:
+        prom = round((d_total / c), 2)
+        return prom
+    else:
+        prom = 0
+        return prom
+
+    registros.close()
 
 
 

@@ -6,7 +6,7 @@ from Clases import *
 def cargarArchivo(FD):
     registros = open(FD, "wb")
     if not os.path.exists("peajes-tp4.csv"):
-        print("no existe el archivo de registros...")
+        print("No existe el archivo de registros...")
     else:
         name = "peajes-tp4.csv"
 
@@ -22,3 +22,4 @@ def cargarArchivo(FD):
 
         peajes.close()
         registros.close()
+        return True

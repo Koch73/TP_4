@@ -17,11 +17,10 @@ def menu():
           "vehículos superan el promedio ordenados por distancia ")
     print("0) Salir ")
     print("-" * 40)
-    opc = int(input('Opcion: '))
 
-    # Bandera para verificar que el importe de cada
-    # tipo de vehiculo fue calculado (necesario para el punto 8)
-
+    opc = (input('\nOpcion: '))
+    while not (opc.isdigit()):
+        opc = input("\nError, ingrese una opcion valida: ")
 
     #Constantes
     FD = "peajes.dat"
@@ -29,57 +28,64 @@ def menu():
     Paises = ("Argentina", "Bolivia", "Brasil", "Paraguay", "Uruguay")
     Vehiculos = ("Motocicleta", "Automovil", "Camión")
 
-    while opc != 0:
-        if opc == 1:
-            decision = int(
-                input("Estas seguro de que deseas eliminar el registro anterior y crear uno nuevo si(1) no (0): "))
-            if decision == 1:
-                registros = cargarArchivo(FD)
-                print("\nRegistros cargados satisfactoriamente.\n")
+    while opc != "0":
 
-        elif opc == 2:
+        if opc == "1":
+            decision = input("Estas seguro de que deseas eliminar el registro anterior y crear uno nuevo si(1) no (0): ")
+            while not(decision == "1" or decision == "0"):
+                decision = input("Error, ingrese una opcion correcta si(1) no(0): ")
+            if decision == "1":
+                registros = cargarArchivo(FD)
+                if registros:
+                    print("\nRegistros cargados satisfactoriamente.\n")
+
+        elif opc == "2":
             cargaPorTeclado(FD)
             print("\nRegistro cargado satisfactoriamente.\n")
 
-        elif opc == 3:
+        elif opc == "3":
             mostrarRegistros(FD)
 
 
-        elif opc == 4:
+        elif opc == "4":
             p = validatePatente()
 
             r = BuscaryMostrarPatente(FD, p)
             if r:
                 print("se encontraron un total de: ", r, "registro/s")
-            else:
+            #Si se utilza un else, y el archivo no esta creado, se printeara tambien "Patente no encontrada"
+            elif r == None:
                 print("Patente no encontrada...")
-        elif opc == 5:
+        elif opc == "5":
 
             c = validateCodigo()
             r = buscarCodigo(FD, c)
             if r:
                 print(r)
-            else:
-                print("Registro no encontrado...")
+            # Si se utilza un else, y el archivo no esta creado, se printeara tambien "Patente no encontrada"
+            elif r == None:
+                print("Codigo no encontrado...")
 
-        elif opc == 6:
+        elif opc == "6":
             """En la f cantidadVehiculos() hay una variable gris"""
 
             Mc = MatrizConteo(FD)
-            mostrarMatrizConteo(Mc, Paises, Vehiculos)
+            if Mc:
+                mostrarMatrizConteo(Mc, Paises, Vehiculos)
 
-        elif opc == 7:
+        elif opc == "7":
             Mc = MatrizConteo(FD)
-            MostrarVehiculos(Mc, Paises, Vehiculos)
+            if Mc:
+                MostrarVehiculos(Mc, Paises, Vehiculos)
 
-        """elif opc == 8:
-            may, porc, indice_may = porcentajeVehiculos()
-            if may != 0 and porc != 0 and indice_may != 0:
-                print("\nEl tipo de vehículo con mayor monto acumulado fue ", "'", lista_vehiculos[indice_may], "'",
-                      "es igual a: ", may, "y representa el", porc, "% del total")
-"""
-        opc = int(input('\nOpcion: '))
+        elif opc == "8":
+            prom_distancia = distanciaPromedio(FD)
+            if prom_distancia:
+                print("La distancia promedio desde la ultima cabina es: ", prom_distancia, "Km" )
 
+        opc = (input('\nOpcion: '))
+        while not(opc.isdigit()):
+            opc = input("\nError, ingrese una opcion valida: ")
 
 def Main():
     menu()
@@ -88,4 +94,5 @@ def Main():
 if __name__ == "__main__":
     Main()
 
-#CORREGIR ERROR: EN LA OPCION 4, AL BUSCAR UNA PATENTE, EL PROGRAMA SOLO DEVUELVE UNA PATENTE, NO TODAS LAS CONCIDENCIAS
+
+#AL PRESIONAR 1, SI EL ARCHIVO CSV NO EXISTE, EL .DAT LO CREA IGUAL, POR LO CUAL LAS OPCIONES COMO LA 3 NO HARAN NADA Y PRINTEAN UN ESPACIO VACIO

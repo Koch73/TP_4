@@ -399,10 +399,6 @@ def distanciaPromedio(FD):
     d_total = 0
     c = 0
 
-    if not(os.path.exists(FD)):
-        print("Los registros no existen, vuelva a la opcion 1 por favor...")
-        return False
-
     registros = open(FD, "rb")
 
     size = os.path.getsize(FD)
@@ -412,6 +408,7 @@ def distanciaPromedio(FD):
         d_total += ticket.km_Recorridos
         c += 1
 
+    registros.close()
     if c != 0:
         prom = round((d_total / c), 2)
         return prom
@@ -419,15 +416,11 @@ def distanciaPromedio(FD):
         prom = 0
         return prom
 
-    registros.close()
+
 
 def crearArreglo(FD, prom):
 
     mayores_prom = []
-
-    if not(os.path.exists(FD)):
-        print("Los registros no existen, vuelva a la opcion 1 por favor...")
-        return False
 
     registros = open(FD, "rb")
 
@@ -463,10 +456,11 @@ def shellSort(v):
 
 def mostrarKmArreglo(v):
     n = len(v)
-    print(n)
+    print(n, "tickets son mayores al promedio: ")
 
     for i in range(n):
         print(v[i])
+
 
 
 

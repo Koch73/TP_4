@@ -1,5 +1,7 @@
-from Funciones import *
-from CargarArreglo import *
+import os.path
+
+#from Funciones import *
+from pruebas import *
 
 def menu():
     print("-" * 40)
@@ -43,47 +45,52 @@ def menu():
             cargaPorTeclado(FD)
             print("\nRegistro cargado satisfactoriamente.\n")
 
-        elif opc == "3":
-            mostrarRegistros(FD)
+        if os.path.getsize(FD) > 0:
+
+            if opc == "3":
+                mostrarRegistros(FD)
 
 
-        elif opc == "4":
-            p = validatePatente()
+            elif opc == "4":
+                p = validatePatente()
 
-            r = BuscaryMostrarPatente(FD, p)
-            if r:
-                print("se encontraron un total de: ", r, "registro/s")
-            #Si se utilza un else, y el archivo no esta creado, se printeara tambien "Patente no encontrada"
-            elif r == None:
-                print("Patente no encontrada...")
-        elif opc == "5":
+                r = BuscaryMostrarPatente(FD, p)
+                if r:
+                    print("se encontraron un total de: ", r, "registro/s")
+                #Si se utilza un else, y el archivo no esta creado, se printeara tambien "Patente no encontrada"
+                elif r == None:
+                    print("Patente no encontrada...")
+            elif opc == "5":
 
-            c = validateCodigo()
-            r = buscarCodigo(FD, c)
-            if r:
-                print(r)
-            # Si se utilza un else, y el archivo no esta creado, se printeara tambien "Patente no encontrada"
-            elif r == None:
-                print("Codigo no encontrado...")
+                c = validateCodigo()
+                r = buscarCodigo(FD, c)
+                if r:
+                    print(r)
+                # Si se utilza un else, y el archivo no esta creado, se printeara tambien "Patente no encontrada"
+                elif r == None:
+                    print("Codigo no encontrado...")
 
-        elif opc == "6":
+            elif opc == "6":
 
-            Mc = MatrizConteo(FD)
-            if Mc:
-                mostrarMatrizConteo(Mc, Paises, Vehiculos)
+                Mc = MatrizConteo(FD)
+                if Mc:
+                    mostrarMatrizConteo(Mc, Paises, Vehiculos)
 
-        elif opc == "7":
-            Mc = MatrizConteo(FD)
-            if Mc:
-                MostrarVehiculos(Mc, Paises, Vehiculos)
+            elif opc == "7":
+                Mc = MatrizConteo(FD)
+                if Mc:
+                    MostrarVehiculos(Mc, Paises, Vehiculos)
 
-        elif opc == "8":
-            prom_distancia = distanciaPromedio(FD)
-            if prom_distancia:
-                print("La distancia promedio desde la ultima cabina es: ", prom_distancia, "Km" )
-                mayores_prom = crearArreglo(FD, prom_distancia)
-                mayores_prom_ordenado = shellSort(mayores_prom)
-                mostrarKmArreglo(mayores_prom_ordenado)
+            elif opc == "8":
+                prom_distancia = distanciaPromedio(FD)
+                if prom_distancia:
+                    print("La distancia promedio desde la ultima cabina es: ", prom_distancia, "Km" )
+                    mayores_prom = crearArreglo(FD, prom_distancia)
+                    mayores_prom_ordenado = shellSort(mayores_prom)
+                    mostrarKmArreglo(mayores_prom_ordenado)
+        else:
+            print("El registro no ha sido creado. Intente presionando la opción 1")
+            print('\nO puede probar agregando un archivo a la carpeta con el nombre: "peajes-tp4.csv" ')
 
         opc = (input('\nOpcion: '))
         while not(opc.isdigit()):
@@ -100,3 +107,4 @@ if __name__ == "__main__":
 #AL PRESIONAR 1, SI EL ARCHIVO CSV NO EXISTE, EL .DAT LO CREA IGUAL, POR LO CUAL LAS OPCIONES COMO LA 3 NO HARAN NADA Y PRINTEAN UN ESPACIO VACIO
 #CAMBIARLE EL NOMBRE AL MODULO DE CARGAR ARREGLO
 #VER SI LA OPCION 8 PRINTEA CORRECTAMENTE LOS REGISTROS DEL ARREGLO.
+"""quitar el archivo pruebas de debug (import) """

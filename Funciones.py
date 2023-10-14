@@ -395,8 +395,6 @@ def calcularImporte(vehiculo,pais,forma_de_pago):
     return importe_final, indice_importe
 
 
-
-
 def distanciaPromedio(FD):
     d_total = 0
     c = 0
@@ -422,6 +420,67 @@ def distanciaPromedio(FD):
         return prom
 
     registros.close()
+
+def crearArreglo(FD, prom):
+
+    mayores_prom = []
+
+    if not(os.path.exists(FD)):
+        print("Los registros no existen, vuelva a la opcion 1 por favor...")
+        return False
+
+    registros = open(FD, "rb")
+
+    size = os.path.getsize(FD)
+
+    while registros.tell() < size:
+        ticket = pickle.load(registros)
+        if ticket.km_Recorridos > prom:
+            mayores_prom.append(ticket)
+
+    return mayores_prom
+
+
+def shellSort(v):
+    n = len(v)
+    h = 1
+
+    while h <= n // 9:
+        h = 3 * h + 1
+
+    while h > 0:
+        for j in range(h, n):
+            y = v[j]
+            k = j - h
+            while k >= 0 and y.km_Recorridos < v[k].km_Recorridos:
+                v[k + h] = v[k]
+                k -= h
+            v[k + h] = y
+        h //= 3
+
+    return v
+
+
+def mostrarKmArreglo(v):
+    n = len(v)
+    print(n)
+
+    for i in range(n):
+        print(v[i])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

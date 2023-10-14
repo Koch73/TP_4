@@ -67,7 +67,6 @@ def menu():
                 print("Codigo no encontrado...")
 
         elif opc == "6":
-            """En la f cantidadVehiculos() hay una variable gris"""
 
             Mc = MatrizConteo(FD)
             if Mc:
@@ -82,6 +81,9 @@ def menu():
             prom_distancia = distanciaPromedio(FD)
             if prom_distancia:
                 print("La distancia promedio desde la ultima cabina es: ", prom_distancia, "Km" )
+                mayores_prom = crearArreglo(FD, prom_distancia)
+                mayores_prom_ordenado = shellSort(mayores_prom)
+                mostrarKmArreglo(mayores_prom_ordenado)
 
         opc = (input('\nOpcion: '))
         while not(opc.isdigit()):
@@ -96,3 +98,5 @@ if __name__ == "__main__":
 
 
 #AL PRESIONAR 1, SI EL ARCHIVO CSV NO EXISTE, EL .DAT LO CREA IGUAL, POR LO CUAL LAS OPCIONES COMO LA 3 NO HARAN NADA Y PRINTEAN UN ESPACIO VACIO
+#CAMBIARLE EL NOMBRE AL MODULO DE CARGAR ARREGLO
+#VER SI LA OPCION 8 PRINTEA CORRECTAMENTE LOS REGISTROS DEL ARREGLO.

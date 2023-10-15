@@ -7,9 +7,12 @@ from Clases import *
 
 #Verificar el pais de la patente
 def definirPatente(patente):
-    indice_pais = ""
+
+    if len(patente) != 7:
+        pais_patente = "Otro"
+
     #ARGENTINA
-    if (
+    elif (
         patente[0].isalpha()
         and patente[1].isalpha()
         and patente[2].isdigit()
@@ -19,7 +22,6 @@ def definirPatente(patente):
         and patente[6].isalpha()
     ):
         pais_patente = "Argentina"
-        indice_pais = 0
 
     #BOLIVIA
     elif (
@@ -32,7 +34,6 @@ def definirPatente(patente):
         and patente[6].isdigit()
     ):
         pais_patente = "Bolivia"
-        indice_pais = 1
     #BRASIL
     elif (
         patente[0].isalpha()
@@ -44,7 +45,6 @@ def definirPatente(patente):
         and patente[6].isdigit()
     ):
         pais_patente = "Brasil"
-        indice_pais = 2
     #CHILE
 
     elif (
@@ -57,7 +57,6 @@ def definirPatente(patente):
         and patente[6].isdigit()
     ):
         pais_patente = "Chile"
-        indice_pais = 5
 
     #PARAGUAY
     elif (
@@ -70,7 +69,6 @@ def definirPatente(patente):
         and patente[6].isdigit()
     ):
         pais_patente = "Paraguay"
-        indice_pais = 3
 
     #URUGUAY
     elif (
@@ -83,13 +81,11 @@ def definirPatente(patente):
         and patente[6].isdigit()
     ):
         pais_patente = "Uruguay"
-        indice_pais = 4
 
     else:
         pais_patente = "Otro"
-        indice_pais = 6
 
-    return pais_patente, indice_pais
+    return pais_patente
 
 
 #Validar que el codigo del ticket contenga solo numeros y que no sea = 0
@@ -217,7 +213,9 @@ def mostrarRegistros(FD):
         size = os.path.getsize(FD)
 
         while registros.tell() < size:
-            print(pickle.load(registros))
+            ticket = pickle.load(registros)
+            r = definirPatente(ticket.patente)
+            print(ticket, "  pais de origen: ", r)
         registros.close()
 
 
@@ -309,93 +307,12 @@ def MostrarVehiculos(Mc, Paises, Vehiculos):
             acumCabina += Mc[i][j]
         print(Vehiculos[i], ": ", acumCabina)
 
-
-#Cambia el valor de la forma de pago de 1 a 2 y viceversa
-def cambiarValor(Registros,indice):
-    if Registros[indice].forma_de_pago == "1":
-        Registros[indice].forma_de_pago = "2"
-    else:
-        Registros[indice].forma_de_pago = "1"
-
-    return Registros
-
-
-#Mostrar la cantidad de vehiculos de cada pais que pasaron por las cabinas
-def mostrarPaises(lista_nombres_paises, lista_paises):
-
-    print("\n")
-
-    for i in range(len(lista_nombres_paises)):
-
-        if lista_nombres_paises[i] == "otros":
-            print("Cantidad de vehiculos de ", lista_nombres_paises[i],
-                  "paises que pasaron por las cabinas: ", lista_paises[i])
-        else:
-            print("Cantidad de vehiculos de ", lista_nombres_paises[i],
-                " que pasaron por las cabinas: ", lista_paises[i])
-
-    print("\n")
-
-
-#Cuenta la cantidad de vehiculos de cada pais que pasaron por las cabinas
-def cantidadVehiculos(Registros):
-
-    lista_nombres_paises = ["Argentina","Bolivia","Brasil","Paraguay","Uruguay","Chile","otros"]
-    lista_paises = [0,0,0,0,0,0,0]
-
-    for i in range(len(Registros)):
-
-        #pais patente(pp), indice patente(ip)
-        pp, ip = definirPatente(Registros[i].patente)
-        lista_paises[ip] += 1
-
-    return lista_nombres_paises, lista_paises
-
-
-#Calcula los importes que se le cobra a cada vehiculo
-def calcularImporte(vehiculo,pais,forma_de_pago):
-    total = 0
-    indice_importe = ""
-
-    vehiculo = int(vehiculo)
-    pais = int(pais)
-    forma_de_pago = int(forma_de_pago)
-
-    #Argentina, Paraguay o Uruguay
-    if pais == 0 or pais == 3 or pais == 4:
-        importe_base = 300
-
-    #Bolivia
-    elif pais == 1:
-        importe_base = 200
-
-    #Brasil
-    else:
-        importe_base = 300
-
-    if vehiculo == 0:
-        importe_basico = importe_base/2
-        indice_importe = 0
-
-    elif vehiculo == 1:
-        importe_basico = importe_base
-        indice_importe = 1
-
-    else:
-        importe_basico = importe_base * 1.6
-        indice_importe = 2
-
-    if forma_de_pago == 1:
-        importe_final = importe_basico
-
-    else:
-        importe_final = importe_basico - (importe_basico * 0.1)
-
-
-    return importe_final, indice_importe
-
-
 def distanciaPromedio(FD):
+
+    if not(os.path.exists(FD)):
+        print("Los registros no existen, vuelva a la opcion 1 por favor...")
+        return None
+
     d_total = 0
     c = 0
 
@@ -419,6 +336,10 @@ def distanciaPromedio(FD):
 
 
 def crearArreglo(FD, prom):
+
+    if not(os.path.exists(FD)):
+        print("Los registros no existen, vuelva a la opcion 1 por favor...")
+        return None
 
     mayores_prom = []
 
@@ -456,11 +377,18 @@ def shellSort(v):
 
 def mostrarKmArreglo(v):
     n = len(v)
-    print(n, "tickets son mayores al promedio: ")
+    print(n, " tickets son mayores al promedio: ")
 
+    cantidad_lineas = input("Cuantas lineas quiere visualizar: ")
+
+    while not (cantidad_lineas.isdigit()):
+        cantidad_lineas = input("Error, Cuantas lineas quiere visualizar: ")
+
+    cantidad_lineas = int(cantidad_lineas)
     for i in range(n):
         print(v[i])
-
+        if i >= cantidad_lineas-1:
+            break
 
 
 

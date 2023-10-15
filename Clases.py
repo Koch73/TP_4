@@ -11,6 +11,6 @@ class Ticket:
         p += "{:<22}".format("Patente: " + self.patente)
         p += "{:<22}".format("Tipo de Vehículo: " + str(self.tipoV))
         p += "{:<22}".format("Forma de Pago: " + str(self.forma_de_pago))
-        p += "{:<22}".format("Pais de origen: " + str(self.pais))
+        p += "{:<22}".format("Pais de cabina: " + str(self.pais))
         p += "{:<22}".format("Kilómetros recorridos: " + str(self.km_Recorridos))
         return p

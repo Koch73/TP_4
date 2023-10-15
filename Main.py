@@ -1,17 +1,15 @@
-import os.path
-
-#from Funciones import *
-from pruebas import *
+from Funciones import *
+from CrearArchivo import *
 
 def menu():
     print("-" * 40)
     print("Seleccione una opción")
 
-    print("1) Guardar tickets en un archivo binario a partir de un archivo de texto")
+    print("1) Guardar tickets en un archivo binario a partir de un archivo de texto ")
     print("2) Crear un nuevo ticket para agregar al archivo binario con datos ingresados por teclado ")
     print("3) Mostrar todos los tickets del archivo binario ")
-    print("4) Buscar y mostrar tickets por patente")
-    print("5) Buscar un ticket por codigo")
+    print("4) Buscar y mostrar tickets por patente ")
+    print("5) Buscar y mostrar un ticket por codigo ")
     print("6) Mostrar cantidad de vehículos segun todas las combinaciones posibles "
           "de cabinas y tipo de vehículo ")
     print("7) Mostrar cantidad de vehículos segun cada cabina y cada tipo de vehículo ")
@@ -21,7 +19,7 @@ def menu():
     print("-" * 40)
 
     opc = (input('\nOpcion: '))
-    while not (opc.isdigit()):
+    while not (opc.isdigit() and opc in "012345678"):
         opc = input("\nError, ingrese una opcion valida: ")
 
     #Constantes
@@ -45,56 +43,54 @@ def menu():
             cargaPorTeclado(FD)
             print("\nRegistro cargado satisfactoriamente.\n")
 
-        if os.path.getsize(FD) > 0:
-
-            if opc == "3":
-                mostrarRegistros(FD)
+        elif opc == "3":
+            mostrarRegistros(FD)
 
 
-            elif opc == "4":
-                p = validatePatente()
+        elif opc == "4":
+            p = validatePatente()
 
-                r = BuscaryMostrarPatente(FD, p)
-                if r:
-                    print("se encontraron un total de: ", r, "registro/s")
-                #Si se utilza un else, y el archivo no esta creado, se printeara tambien "Patente no encontrada"
-                elif r == None:
-                    print("Patente no encontrada...")
-            elif opc == "5":
+            r = BuscaryMostrarPatente(FD, p)
+            if r:
+                print("se encontraron un total de: ", r, "registro/s")
+            #Si se utilza un else, y el archivo no esta creado, se printeara tambien "Patente no encontrada"
+            elif r == None:
+                print("Patente no encontrada...")
+        elif opc == "5":
 
-                c = validateCodigo()
-                r = buscarCodigo(FD, c)
-                if r:
-                    print(r)
-                # Si se utilza un else, y el archivo no esta creado, se printeara tambien "Patente no encontrada"
-                elif r == None:
-                    print("Codigo no encontrado...")
+            c = validateCodigo()
+            r = buscarCodigo(FD, c)
+            if r:
+                print(r)
+            # Si se utilza un else, y el archivo no esta creado, se printeara tambien "Patente no encontrada"
+            elif r == None:
+                print("Codigo no encontrado...")
 
-            elif opc == "6":
+        elif opc == "6":
 
-                Mc = MatrizConteo(FD)
-                if Mc:
-                    mostrarMatrizConteo(Mc, Paises, Vehiculos)
+            Mc = MatrizConteo(FD)
+            if Mc:
+                mostrarMatrizConteo(Mc, Paises, Vehiculos)
 
-            elif opc == "7":
-                Mc = MatrizConteo(FD)
-                if Mc:
-                    MostrarVehiculos(Mc, Paises, Vehiculos)
+        elif opc == "7":
+            Mc = MatrizConteo(FD)
+            if Mc:
+                MostrarVehiculos(Mc, Paises, Vehiculos)
 
-            elif opc == "8":
-                prom_distancia = distanciaPromedio(FD)
-                if prom_distancia:
-                    print("La distancia promedio desde la ultima cabina es: ", prom_distancia, "Km" )
-                    mayores_prom = crearArreglo(FD, prom_distancia)
-                    mayores_prom_ordenado = shellSort(mayores_prom)
-                    mostrarKmArreglo(mayores_prom_ordenado)
-        else:
-            print("El registro no ha sido creado. Intente presionando la opción 1")
-            print('\nO puede probar agregando un archivo a la carpeta con el nombre: "peajes-tp4.csv" ')
+        elif opc == "8":
+            prom_distancia = distanciaPromedio(FD)
+            if prom_distancia:
+                print("La distancia promedio desde la ultima cabina es: ", prom_distancia, "Km" )
+                mayores_prom = crearArreglo(FD, prom_distancia)
+                mayores_prom_ordenado = shellSort(mayores_prom)
+                mostrarKmArreglo(mayores_prom_ordenado)
 
         opc = (input('\nOpcion: '))
-        while not(opc.isdigit()):
+        while not(opc.isdigit() and opc in "012345678"):
             opc = input("\nError, ingrese una opcion valida: ")
+
+        if opc == 9:
+            pass
 
 def Main():
     menu()
@@ -104,7 +100,5 @@ if __name__ == "__main__":
     Main()
 
 
-#AL PRESIONAR 1, SI EL ARCHIVO CSV NO EXISTE, EL .DAT LO CREA IGUAL, POR LO CUAL LAS OPCIONES COMO LA 3 NO HARAN NADA Y PRINTEAN UN ESPACIO VACIO
-#CAMBIARLE EL NOMBRE AL MODULO DE CARGAR ARREGLO
-#VER SI LA OPCION 8 PRINTEA CORRECTAMENTE LOS REGISTROS DEL ARREGLO.
-"""quitar el archivo pruebas de debug (import) """
+#ESTILIZAR LOS PRINTS E INPUTS CON \n
+#ESTILIZAR ESPACIADOS

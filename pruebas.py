@@ -12,13 +12,12 @@ def cargarArchivo(FD):
 
         peajes = open(name, "r")
         lineas = peajes.readlines()
-
         # El for comienza en 2 salteando timestamp y campos
         for i in range(2, len(lineas)):
             linea = lineas[i]
             campos = linea.split(",")
-            #x = Ticket(0, "h", 2, 3, 4, int(campos[5]))
-            x = Ticket(int(campos[0]), campos[1], int(campos[2]), int(campos[3]), int(campos[4]), int(campos[5]))
+            x = Ticket(0, "h", 2, 3, 4, int(campos[5]))
+            #x = Ticket(int(campos[0]), campos[1], int(campos[2]), int(campos[3]), int(campos[4]), int(campos[5]))
 
             pickle.dump(x, registros)
 
@@ -483,10 +482,10 @@ def shellSort(v):
 def mostrarKmArreglo(v):
     n = len(v)
     print(n, "tickets son mayores al promedio: ")
-
+    Mayores
     for i in range(n):
         print(v[i])
-        if i >2000:
+        if i > 2000:
             break
 
 

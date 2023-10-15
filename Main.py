@@ -1,6 +1,7 @@
 from Funciones import *
 from CrearArchivo import *
 
+
 def menu():
     print("-" * 40)
     print("Seleccione una opción")
@@ -22,7 +23,7 @@ def menu():
     while not (opc.isdigit() and opc in "012345678"):
         opc = input("\nError, ingrese una opcion valida: ")
 
-    #Constantes
+    # Constantes
     FD = "peajes.dat"
 
     Paises = ("Argentina", "Bolivia", "Brasil", "Paraguay", "Uruguay")
@@ -46,15 +47,14 @@ def menu():
         elif opc == "3":
             mostrarRegistros(FD)
 
-
         elif opc == "4":
             p = validatePatente()
 
             r = BuscaryMostrarPatente(FD, p)
             if r:
                 print("se encontraron un total de: ", r, "registro/s")
-            #Si se utilza un else, y el archivo no esta creado, se printeara tambien "Patente no encontrada"
-            elif r == None:
+            # Si se utilza un else, y el archivo no esta creado, se printeara tambien "Patente no encontrada"
+            elif r is None:
                 print("Patente no encontrada...")
         elif opc == "5":
 
@@ -63,7 +63,7 @@ def menu():
             if r:
                 print(r)
             # Si se utilza un else, y el archivo no esta creado, se printeara tambien "Patente no encontrada"
-            elif r == None:
+            elif r is None:
                 print("Codigo no encontrado...")
 
         elif opc == "6":
@@ -92,13 +92,10 @@ def menu():
         if opc == 9:
             pass
 
+
 def Main():
     menu()
 
 
 if __name__ == "__main__":
     Main()
-
-
-#ESTILIZAR LOS PRINTS E INPUTS CON \n
-#ESTILIZAR ESPACIADOS

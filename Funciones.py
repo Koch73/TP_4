@@ -1,17 +1,16 @@
-import io
 import os
 import pickle
 import os.path
 from Clases import *
 
 
-#Verificar el pais de la patente
+# Verificar el pais de la patente
 def definirPatente(patente):
 
     if len(patente) != 7:
         pais_patente = "Otro"
 
-    #ARGENTINA
+    # ARGENTINA
     elif (
         patente[0].isalpha()
         and patente[1].isalpha()
@@ -23,7 +22,7 @@ def definirPatente(patente):
     ):
         pais_patente = "Argentina"
 
-    #BOLIVIA
+    # BOLIVIA
     elif (
         patente[0].isalpha()
         and patente[1].isalpha()
@@ -34,7 +33,7 @@ def definirPatente(patente):
         and patente[6].isdigit()
     ):
         pais_patente = "Bolivia"
-    #BRASIL
+    # BRASIL
     elif (
         patente[0].isalpha()
         and patente[1].isalpha()
@@ -45,7 +44,7 @@ def definirPatente(patente):
         and patente[6].isdigit()
     ):
         pais_patente = "Brasil"
-    #CHILE
+    # CHILE
 
     elif (
         patente[0] == " "
@@ -58,7 +57,7 @@ def definirPatente(patente):
     ):
         pais_patente = "Chile"
 
-    #PARAGUAY
+    # PARAGUAY
     elif (
         patente[0].isalpha()
         and patente[1].isalpha()
@@ -70,7 +69,7 @@ def definirPatente(patente):
     ):
         pais_patente = "Paraguay"
 
-    #URUGUAY
+    # URUGUAY
     elif (
         patente[0].isalpha()
         and patente[1].isalpha()
@@ -87,8 +86,7 @@ def definirPatente(patente):
 
     return pais_patente
 
-
-#Validar que el codigo del ticket contenga solo numeros y que no sea = 0
+# Validar que el codigo del ticket contenga solo numeros y que no sea = 0
 def validateCodigo():
     while True:
         codigo = input("Ingrese el codigo: ")
@@ -99,7 +97,7 @@ def validateCodigo():
             print("Incorrecto, ingrese un codigo valido")
 
 
-#Validar que la patente contenga solo caracteres alfanumericos
+# Validar que la patente contenga solo caracteres alfanumericos
 def validatePatente():
     while True:
         patente = input("Ingrese la patente: ").upper()
@@ -116,7 +114,7 @@ def validatePatente():
             print("Error, Patente incorrecta")
 
 
-#Validar que el pais de la cabina este entre 0 y 4
+# Validar que el pais de la cabina este entre 0 y 4
 def validatePais():
     while True:
         pais = input("Ingrese el pais de la cabina: ")
@@ -126,7 +124,7 @@ def validatePais():
             print("Error, pais no valido")
 
 
-#Validar que el tipo de vehiculo este entre 0 y 2
+# Validar que el tipo de vehiculo este entre 0 y 2
 def validateTipo():
     tipo = input("Ingrese el tipo de vehiculo: ")
     while not tipo in '012' or len(tipo) != 1:
@@ -135,16 +133,16 @@ def validateTipo():
     return int(tipo)
 
 
-#Validar que la forma de pago este entre  1 o 2
+# Validar que la forma de pago este entre  1 o 2
 def validateFormaDePago():
     while True:
         pago = input("Ingrese la forma de pago: ")
-        if pago in ('12') and len(pago) == 1:
+        if pago in '12' and len(pago) == 1:
             return int(pago)
         else:
             print("Forma de pago inválida. Vuelva a intentar.")
 
-#Validar que la distancia recorrida en kilometros este entre 000 y 999
+# Validar que la distancia recorrida en kilometros este entre 000 y 999
 def validateKm():
 
     distancia = input("Ingrese los kilómetros recorridos: ")
@@ -154,7 +152,7 @@ def validateKm():
     return int(distancia)
 
 
-#Cargar un registro por teclado
+# Cargar un registro por teclado
 def cargaPorTeclado(FD):
 
     TicketGenerado = Ticket()
@@ -177,7 +175,7 @@ def cargaPorTeclado(FD):
     registros.close()
 
 
-#Agregar los 0 que sean necesarios (x) a los componentes de una lista t
+# Agregar los 0 que sean necesarios (x) a los componentes de una lista t
 def agregarCeros(Registros, x):
     for i in range(len(Registros)):
         if len(str(Registros[i].codigo)) != x:
@@ -187,17 +185,17 @@ def agregarCeros(Registros, x):
     return Registros
 
 
-#Ordenar mediante selection sort los registros de una lista v
+# Ordenar mediante selection sort los registros de una lista v
 def ordenarRegistros(Registros):
 
-    #ordenamiento por seleccion directa
+    # ordenamiento por seleccion directa
     n = len(Registros)
     for i in range(n - 1):
         for j in range(i + 1, n):
             if Registros[i].codigo > Registros[j].codigo:
                 Registros[i], Registros[j] = Registros[j], Registros[i]
 
-    #agregarle los 0 que falta delante de los codigos
+    # agregarle los 0 que falta delante de los codigos
     Registros = agregarCeros(Registros, 10)
 
     return Registros
@@ -219,7 +217,7 @@ def mostrarRegistros(FD):
         registros.close()
 
 
-#Buscar registros con la patente p y retornar un contador de registros encontrados
+# Buscar registros con la patente p y retornar un contador de registros encontrados
 def BuscaryMostrarPatente(FD, p):
 
     if not(os.path.exists(FD)):
@@ -228,7 +226,7 @@ def BuscaryMostrarPatente(FD, p):
     registros = open(FD, "rb")
     p = p.upper()
     c = 0
-    #Linear search
+    # Linear search
     size = os.path.getsize(FD)
     while registros.tell() < size:
         ticket = pickle.load(registros)
@@ -242,14 +240,14 @@ def BuscaryMostrarPatente(FD, p):
         return None
 
 
-#Buscar mediante busqueda el codigo c en los registros
+# Buscar mediante busqueda el codigo c en los registros
 def buscarCodigo(FD, c):
     if not(os.path.exists(FD)):
         print("Los registros no existen, vuelva a la opcion 1 por favor...")
         return False
     registros = open(FD, "rb")
 
-    #Linear search
+    # Linear search
     size = os.path.getsize(FD)
 
     while registros.tell() < size:
@@ -283,14 +281,14 @@ def MatrizConteo(FD):
     registros.close()
     return Mc
 
-
+#
 def mostrarMatrizConteo(Mc, Paises, Vehiculos):
     for i in range(len(Mc[0])):
         for j in range(len(Mc)):
             if Mc[j][i] != 0:
                 print("\nEl tipo de vehiculo ", Vehiculos[j], " paso por el pais ", Paises[i], " ", Mc[j][i], " veces")
 
-
+# Totalizar las filas y las columnas de la matriz
 def MostrarVehiculos(Mc, Paises, Vehiculos):
 
     print("Cantidad de vehículos que pasaron por cada pais: ")
@@ -307,6 +305,7 @@ def MostrarVehiculos(Mc, Paises, Vehiculos):
             acumCabina += Mc[i][j]
         print(Vehiculos[i], ": ", acumCabina)
 
+# Calcular el promedio desde la ultima cabina
 def distanciaPromedio(FD):
 
     if not(os.path.exists(FD)):
@@ -333,8 +332,7 @@ def distanciaPromedio(FD):
         prom = 0
         return prom
 
-
-
+# Crea el arreglo con los tickets mayores al promedio
 def crearArreglo(FD, prom):
 
     if not(os.path.exists(FD)):
@@ -354,7 +352,7 @@ def crearArreglo(FD, prom):
 
     return mayores_prom
 
-
+# Ordenamiento del arreglo de tockets mayores al promedio con shellsort
 def shellSort(v):
     n = len(v)
     h = 1
@@ -374,7 +372,7 @@ def shellSort(v):
 
     return v
 
-
+# Muestra el arreglo ordenado de los tickets mayores al promedio
 def mostrarKmArreglo(v):
     n = len(v)
     print(n, " tickets son mayores al promedio: ")
@@ -389,20 +387,3 @@ def mostrarKmArreglo(v):
         print(v[i])
         if i >= cantidad_lineas-1:
             break
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

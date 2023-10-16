@@ -1,11 +1,12 @@
 class Ticket:
-    def __init__(self, codigo  =0, patente = "", tipoV = 0, forma_de_pago = 0, pais = 0, km_Recorridos = 0):
+    def __init__(self, codigo=0, patente="", tipo_v=0, forma_de_pago=0, pais=0, km_recorridos=0):
         self.codigo = codigo
         self.patente = patente
-        self.tipoV = tipoV
+        self.tipoV = tipo_v
         self.forma_de_pago = forma_de_pago
         self.pais = pais
-        self.km_Recorridos = km_Recorridos
+        self.km_Recorridos = km_recorridos
+
     def __str__(self):
         p = "{:<22}".format("Código: " + str(self.codigo))
         p += "{:<22}".format("Patente: " + self.patente)

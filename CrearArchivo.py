@@ -2,14 +2,15 @@ import pickle
 import os.path
 from Clases import *
 
-#Cargar vector por archivo de texto
-def cargarArchivo(FD):
+
+# Cargar vector por archivo de texto
+def cargar_archivo(fd):
 
     if not os.path.exists("peajes-tp4.csv"):
-        print("No existe el archivo de registros...")
+        print("\nNo existe el archivo de registros...")
         return None
     else:
-        registros = open(FD, "wb")
+        registros = open(fd, "wb")
         name = "peajes-tp4.csv"
 
         peajes = open(name, "r")

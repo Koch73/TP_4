@@ -24,78 +24,72 @@ def menu():
         opc = input("\nError, ingrese una opcion valida: ")
 
     # Constantes
-    FD = "peajes.dat"
+    fd = "peajes.dat"
 
-    Paises = ("Argentina", "Bolivia", "Brasil", "Paraguay", "Uruguay")
-    Vehiculos = ("Motocicleta", "Automovil", "Camión")
+    paises = ("Argentina", "Bolivia", "Brasil", "Paraguay", "Uruguay")
+    vehiculos = ("Motocicleta", "Automovil", "Camión")
 
     while opc != "0":
 
         if opc == "1":
-            decision = input("Estas seguro de que deseas eliminar el registro anterior y crear uno nuevo si(1) no (0): ")
+            decision = input("Estas seguro de que deseas eliminar "
+                             "el registro anterior y crear uno nuevo si(1) no (0): ")
             while not(decision == "1" or decision == "0"):
                 decision = input("Error, ingrese una opcion correcta si(1) no(0): ")
             if decision == "1":
-                registros = cargarArchivo(FD)
+                registros = cargar_archivo(fd)
                 if registros:
                     print("\nRegistros cargados satisfactoriamente.\n")
 
         elif opc == "2":
-            cargaPorTeclado(FD)
+            carga_por_teclado(fd)
             print("\nRegistro cargado satisfactoriamente.\n")
 
         elif opc == "3":
-            mostrarRegistros(FD)
+            mostrar_registros(fd)
 
         elif opc == "4":
-            p = validatePatente()
+            p = validate_patente()
 
-            r = BuscaryMostrarPatente(FD, p)
+            r = buscar_mostrar_patente(fd, p)
             if r:
-                print("se encontraron un total de: ", r, "registro/s")
+                print("\nSe encontraron un total de: ", r, "registro/s")
             # Si se utilza un else, y el archivo no esta creado, se printeara tambien "Patente no encontrada"
             elif r is None:
-                print("Patente no encontrada...")
+                print("\nPatente no encontrada...")
+
         elif opc == "5":
-
-            c = validateCodigo()
-            r = buscarCodigo(FD, c)
+            c = validate_codigo()
+            r = buscar_codigo(fd, c)
             if r:
-                print(r)
+                print("\n", r, "\n")
             # Si se utilza un else, y el archivo no esta creado, se printeara tambien "Patente no encontrada"
             elif r is None:
-                print("Codigo no encontrado...")
+                print("\nCodigo no encontrado...")
 
         elif opc == "6":
 
-            Mc = MatrizConteo(FD)
-            if Mc:
-                mostrarMatrizConteo(Mc, Paises, Vehiculos)
+            mc = crear_matriz_conteo(fd)
+            if mc:
+                mostrar_matriz_conteo(mc, paises, vehiculos)
 
         elif opc == "7":
-            Mc = MatrizConteo(FD)
-            if Mc:
-                MostrarVehiculos(Mc, Paises, Vehiculos)
+            mc = crear_matriz_conteo(fd)
+            if mc:
+                mostrar_vehiculos(mc, paises, vehiculos)
 
         elif opc == "8":
-            prom_distancia = distanciaPromedio(FD)
+            prom_distancia = distancia_promedio(fd)
             if prom_distancia:
-                print("La distancia promedio desde la ultima cabina es: ", prom_distancia, "Km" )
-                mayores_prom = crearArreglo(FD, prom_distancia)
-                mayores_prom_ordenado = shellSort(mayores_prom)
-                mostrarKmArreglo(mayores_prom_ordenado)
+                print("\nLa distancia promedio desde la ultima cabina es: ", prom_distancia, "Km")
+                mayores_prom = crear_arreglo(fd, prom_distancia)
+                mayores_prom_ordenado = shell_sort(mayores_prom)
+                mostrar_km_arreglo(mayores_prom_ordenado)
 
         opc = (input('\nOpcion: '))
         while not(opc.isdigit() and opc in "012345678"):
             opc = input("\nError, ingrese una opcion valida: ")
 
-        if opc == 9:
-            pass
-
-
-def Main():
-    menu()
-
 
 if __name__ == "__main__":
-    Main()
+    menu()
